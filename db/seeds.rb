@@ -14,7 +14,7 @@ Pokemon.destroy_all
 
 def pokemon
   response = RestClient.get 'https://pokeapi.co/api/v2/pokemon?limit=151'
-  json_array = JSON.parse(response)['data']
+  json_array = JSON.parse(response)['results']
 
   json_array.each do |pokedata|
     Pokemon.create(
@@ -31,3 +31,5 @@ def pokemon
   #     puts "error seeding pokemon"
   # end
 end
+
+pokemon

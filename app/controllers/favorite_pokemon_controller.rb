@@ -1,0 +1,3 @@
+class FavoritePokemonController < ApplicationController
+    
+end

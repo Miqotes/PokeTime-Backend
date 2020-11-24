@@ -5,3 +5,29 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+# fetching pokemon
+
+require 'rest-client'
+
+Pokemon.destroy_all
+
+def pokemon
+  response = RestClient.get 'https://pokeapi.co/api/v2/pokemon?limit=151'
+  json_array = JSON.parse(response)['data']
+
+  json_array.each do |pokedata|
+    Pokemon.create(
+      name: pokedata['name'],
+      url: pokedata['url']
+    )
+  end
+
+  # if !json.nil?
+  #     json["data"].map do |pokedata|
+  #         Pokemon.create(name: "#{pokedata["name"]}", img_url:"#{pokedata["url"]}")
+  #     end
+  # else
+  #     puts "error seeding pokemon"
+  # end
+end

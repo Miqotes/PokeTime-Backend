@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
+    # skip_before_action :require_login, only: [:create]
 
-    def Create
+    def create
         user = User.create(user_params)
         if user.valid?
             payload = { user_id: user.id }

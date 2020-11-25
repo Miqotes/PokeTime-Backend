@@ -21,7 +21,7 @@ def pokemon
       name: pokedata['name'],
       url: pokedata['url']
     )
-  end
+end
 
   # if !json.nil?
   #     json["data"].map do |pokedata|

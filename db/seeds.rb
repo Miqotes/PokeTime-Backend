@@ -17,10 +17,16 @@ def pokemon
   json_array = JSON.parse(response)['results']
 
   json_array.each do |pokedata|
+    response = RestClient.get pokedata['url']
+    full_pokemon = JSON.parse(response)
+
     Pokemon.create(
       name: pokedata['name'],
-      url: pokedata['url']
+      url: pokedata['url'],
+      sprite: full_pokemon['sprites']['front_default']
     )
+  end
+    
 end
 
   # if !json.nil?
@@ -30,6 +36,6 @@ end
   # else
   #     puts "error seeding pokemon"
   # end
-end
+
 
 pokemon

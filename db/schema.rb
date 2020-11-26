@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 2020_11_23_232800) do
   create_table "pokemons", force: :cascade do |t|
     t.string "name"
     t.string "url"
+    t.string "sprite"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

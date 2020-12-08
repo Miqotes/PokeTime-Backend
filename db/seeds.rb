@@ -13,7 +13,7 @@ require 'rest-client'
 Pokemon.destroy_all
 
 def pokemon
-  response = RestClient.get 'https://pokeapi.co/api/v2/pokemon?limit=151'
+  response = RestClient.get 'http://pokeapi.co/api/v2/pokemon/?limit=151'
   json_array = JSON.parse(response)['results']
 
   json_array.each do |pokedata|
@@ -23,10 +23,8 @@ def pokemon
     Pokemon.create(
       name: pokedata['name'],
       url: pokedata['url'],
-      sprite: full_pokemon['sprites']['front_default']
-    )
+      sprite: full_pokemon['sprites']['front_default'])
   end
-    
 end
 
   # if !json.nil?

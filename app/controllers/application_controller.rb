@@ -22,10 +22,10 @@ class ApplicationController < ActionController::API
 
     def session_user
         decoded_hash = decoded_token
-        if !decoded_hash.empty? 
+        if decoded_hash && !decoded_hash.empty?
             puts decoded_hash.class
             user_id = decoded_hash[0]['user_id']
-            @user = User.find_by(id: user_id)
+            @user = User.includes(teams: :pokemon).find_by(id: user_id)
         else
             nil
         end

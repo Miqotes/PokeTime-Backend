@@ -3,6 +3,7 @@ class UsersController < ApplicationController
 
     def create
         user = User.create(user_params)
+        puts user
         if user.valid?
             payload = { user_id: user.id }
             token = encode_token(payload)
@@ -18,7 +19,32 @@ class UsersController < ApplicationController
       end
     
       def update
-        @user.update(user_params)
+        params.permit(:id, :bio, :teams, :favorites)
+
+        if params.key?(:teams)
+          params[:teams].map do |team|
+            if team[:id] == -1
+              #Team.create(user: @user, name: team[:name])
+              Team.create(user: @user)
+            else
+              db_team = Team.find(team[:id])
+              #db_team.name = team[:name]
+              db_team.pokemon = Pokemon.where(id: team[:pokemon].map { |p| p[:id] })
+              db_team.save
+            end
+          end
+        end
+
+        if params.key?(:favorites)
+          @user.favorites = Pokemon.where(id: params[:favorites].map { |p| p[:id] })
+          @user.save
+        end
+
+        if params.key?(:bio)
+          @user.update(bio: params[:bio])
+        end
+
+        @user = User.find(@user.id)
         render json: @user, status: 200
       end
     
@@ -29,7 +55,7 @@ class UsersController < ApplicationController
       end
     
       def show
-        render json: @user, status: 200
+        render json: @user, includes: {teams: :pokemon}, status: 200
       end
 
     private
@@ -38,7 +64,15 @@ class UsersController < ApplicationController
         params.permit(:username, :password)
     end
 
-    def set_user
-        @user = User.find(params[:id])
-      end
+ #   def update_user_params
+ #     params.permit(:id, :bio, :teams, :favorites)
+ #   end
+
+    #def set_user
+    #  @user = User.includes(teams: :pokemon).find(params[:id])
+    #end
+
+    #def set_user_with_teams
+    #  @user = User.includes(teams: :pokemon).find(params[:id])
+    #end
 end
